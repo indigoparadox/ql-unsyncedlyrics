@@ -78,11 +78,16 @@ class ViewUnsyncLyrics(EventPlugin):
         If there are lyrics associated with `song`, load them into the
         lyrics viewer. Otherwise, hides the lyrics viewer.
         """
-        if (song is not None) and os.path.exists(song.lyric_filename):
-            with open(song.lyric_filename, 'r') as lyric_file:
-                self.textbuffer.set_text(lyric_file.read())
-            self.adjustment.set_value(0)    # Scroll to the top.
-            self.expander.show()
+        #if (song is not None) and os.path.exists(song.lyric_filename):
+        if (song is not None):
+            lyric_path = os.path.splitext(song('~filename'))[0] + '.txt'
+            try:
+                with open(lyric_path, 'r') as lyric_file:
+                    self.textbuffer.set_text(lyric_file.read())
+                self.adjustment.set_value(0)    # Scroll to the top.
+                self.expander.show()
+            except:
+                self.expander.hide()
         else:
             self.expander.hide()
 
